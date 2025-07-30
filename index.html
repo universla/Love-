@@ -78,7 +78,7 @@
 
     /* Estilo de los corazones */
     .corazon {
-      position: fixed;
+      position: absolute;
       color: #ff4081;
       font-size: 20px;
       user-select: none;
@@ -101,9 +101,9 @@
 <body>
 
   <h1>📝 Texto en Lote 💖</h1>
-  <p>Herramienta gratuita con amor y descargas</p>
+  <p>Escribe <strong>love</strong> y verás magia ❤️</p>
 
-  <textarea id="inputText" placeholder="Escribe algo... como 'love' o 'amor' ❤️" oninput="detectarAmor(this)"></textarea>
+  <textarea id="inputText" placeholder="Escribe algo... prueba con 'love'" oninput="detectarAmor(this)"></textarea>
 
   <div class="buttons">
     <button onclick="convertirMayusculas()">MAYÚSCULAS</button>
@@ -198,35 +198,62 @@
       URL.revokeObjectURL(url);
     }
 
-    // === DETECTAR AMOR Y MOSTRAR CORAZONES 💓 ===
-    function detectarAmor(textarea) {
-      const texto = textarea.value.toLowerCase();
-      const palabrasAmor = ["love", "amor", "corazon", "heart", "ily", "<3"];
-      
-      // Detectar si se escribió "love", "amor", etc.
-      palabrasAmor.forEach(palabra => {
-        if (texto.includes(palabra)) {
-          crearCorazon();
-          textarea.value = textarea.value.replace(palabra, "💖 " + palabra + " 💖");
-        }
-      });
+    // === DETECTAR "love" Y MOSTRAR CORAZONES ===
+    let loveDetectado = false; // Para evitar repetir
 
-      // Detectar letras individuales (l, o, v, e)
-      const ultimaLetra = textarea.value.slice(-1).toLowerCase();
+    function detectarAmor(textarea) {
+      const value = textarea.value;
+      const cursorPos = textarea.selectionStart; // Posición del cursor
+
+      // Buscar "love" como palabra completa (con espacio, salto o inicio/fin)
+      const palabras = value.toLowerCase().split(/[\s\n,.;:!?]+/);
+      const ultimoFragmento = value.slice(Math.max(0, cursorPos - 10), cursorPos).toLowerCase();
+
+      if (palabras.includes("love") && !loveDetectado) {
+        loveDetectado = true;
+
+        // Resaltar "love" en el textarea
+        textarea.value = value.replace(/\blove\b/gi, "💖 love 💖");
+
+        // Crear 10 corazones que salgan del área del textarea
+        for (let i = 0; i < 10; i++) {
+          setTimeout(() => {
+            crearCorazon(
+              Math.random() * (textarea.offsetWidth - 20) + textarea.offsetLeft,
+              textarea.offsetTop + textarea.offsetHeight - 20
+            );
+          }, i * 100);
+        }
+
+        // Reiniciar después de 2 segundos para que pueda volver a activarse
+        setTimeout(() => {
+          loveDetectado = false;
+        }, 2000);
+      }
+
+      // Detectar letras "l", "o", "v", "e" individualmente (opcional)
+      const ultimaLetra = value.slice(-1).toLowerCase();
       if (["l", "o", "v", "e"].includes(ultimaLetra)) {
-        crearCorazon();
+        // Pequeño corazón por letra
+        if (Math.random() < 0.4) { // 40% de probabilidad
+          crearCorazon(
+            Math.random() * window.innerWidth,
+            window.innerHeight - 100
+          );
+        }
       }
     }
 
-    function crearCorazon() {
+    // === CREAR CORAZÓN EN POSICIÓN ESPECÍFICA ===
+    function crearCorazon(x, y) {
       const corazon = document.createElement("div");
       corazon.classList.add("corazon");
       corazon.textContent = "❤️";
-      corazon.style.left = Math.random() * window.innerWidth + "px";
-      corazon.style.bottom = "20px";
+      corazon.style.left = x + "px";
+      corazon.style.top = y + "px";
       document.body.appendChild(corazon);
 
-      // Eliminar el corazón del DOM después de la animación
+      // Eliminar del DOM después de la animación
       setTimeout(() => {
         corazon.remove();
       }, 3000);
