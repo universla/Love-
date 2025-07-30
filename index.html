@@ -4,108 +4,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>💖 Texto en Lote con Amor</title>
+  <title>💖 Solo Love</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 800px;
-      margin: 30px auto;
-      padding: 20px;
-      background: #fff0f5;
-      color: #2c3333;
-      line-height: 1.6;
-      position: relative;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffeef2;
+      font-family: 'Arial', sans-serif;
       overflow: hidden;
-      text-align: center;
-    }
-
-    /* Palabra LOVE en el centro */
-    .love-center {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 120px;
-      font-weight: bold;
-      color: transparent;
-      background: linear-gradient(45deg, #ff4081, #e91e63, #ff69b4);
-      -webkit-background-clip: text;
-      background-clip: text;
-      pointer-events: none;
-      opacity: 0.1;
-      z-index: -1;
-      letter-spacing: 8px;
-      text-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+      position: relative;
       user-select: none;
     }
 
-    h1 {
+    .love-text {
+      font-size: 80px;
+      font-weight: bold;
       color: #e91e63;
-      margin-bottom: 10px;
-    }
-    p {
-      color: #555;
-      font-size: 16px;
-    }
-    textarea {
-      width: 100%;
-      height: 160px;
-      margin: 20px 0;
-      padding: 12px;
-      border: 2px solid #ff69b4;
-      border-radius: 12px;
-      font-size: 14px;
-      resize: vertical;
-      box-shadow: 0 4px 10px rgba(255, 105, 180, 0.2);
-      background-color: white;
-    }
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-      justify-content: center;
-    }
-    button {
-      background-color: #e91e63;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
+      text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
       cursor: pointer;
-      font-size: 14px;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background-color: #c2185b;
-    }
-    .output {
-      padding: 16px;
-      background-color: #fff;
-      border: 1px solid #ffb6c1;
-      border-radius: 8px;
-      min-height: 50px;
-      white-space: pre-wrap;
-      font-family: monospace;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      text-align: left;
-    }
-    footer {
-      margin-top: 30px;
-      color: #777;
-      font-size: 14px;
+      animation: latido 1.5s infinite alternate;
+      z-index: 10;
     }
 
-    /* Corazones flotantes */
+    @keyframes latido {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
+    }
+
     .corazon {
       position: absolute;
-      color: #ff4081;
       font-size: 20px;
-      user-select: none;
+      opacity: 1;
       pointer-events: none;
       animation: flotar 3s ease-out forwards;
-      z-index: 1000;
     }
+
     @keyframes flotar {
       0% {
         transform: translateY(0) rotate(0deg);
@@ -117,52 +53,40 @@
       }
     }
 
-    /* Botón de música */
     .music-btn {
-      background-color: #9c27b0;
-      margin: 10px auto;
-      display: block;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #9c27b0;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
+
     .music-btn:hover {
-      background-color: #7b1fa2;
+      background: #7b1fa2;
     }
   </style>
 </head>
 <body>
 
-  <!-- Palabra LOVE gigante en el fondo -->
-  <div class="love-center">love</div>
+  <!-- Palabra love en el centro -->
+  <div class="love-text" onclick="hacerMagia()">love</div>
 
-  <h1>📝 Texto en Lote 💖</h1>
-  <p>Escribe cualquier letra y verás amor flotar</p>
+  <!-- Botón para música -->
+  <button class="music-btn" onclick="toggleMusic()">
+    🎵 Activar Música Romántica
+  </button>
 
-  <!-- Botón para activar música -->
-  <button class="music-btn" onclick="toggleMusic()">🎵 Activar Música Romántica</button>
+  <!-- Sonido de corazón -->
+  <audio id="sonidoCorazon" src="https://assets.mixkit.co/sfx/preview/mixkit-single-tone-arcade-game-over-211.mp3"></audio>
 
-  <textarea id="inputText" placeholder="Escribe algo..." oninput="escribirConAmor(this)"></textarea>
-
-  <div class="buttons">
-    <button onclick="convertirMayusculas()">MAYÚSCULAS</button>
-    <button onclick="convertirMinusculas()">minúsculas</button>
-    <button onclick="quitarEspacios()">Quitar espacios</button>
-    <button onclick="eliminarDuplicados()">Eliminar duplicados</button>
-    <button onclick="ordenar()">Ordenar A-Z</button>
-    <button onclick="agregarPrefijo()">+ Prefijo</button>
-    <button onclick="agregarSufijo()">+ Sufijo</button>
-    <button onclick="descargar()">🔽 Descargar .txt</button>
-    <button onclick="limpiar()">Limpiar</button>
-  </div>
-
-  <div class="output" id="output">El resultado aparecerá aquí...</div>
-
-  <footer>
-    Hecho con ❤️ | 100% gratis y con amor
-  </footer>
-
-  <!-- Sonidos -->
-  <audio id="sonidoCorazon" src="https://assets.mixkit.co/sfx/preview/mixkit-single-tone-arcade-game-over-211.mp3" preload="auto"></audio>
-  
-  <!-- Música romántica de fondo (suave) -->
+  <!-- Música de fondo -->
   <audio id="musicaFondo" loop>
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
   </audio>
@@ -172,127 +96,52 @@
     const musica = document.getElementById("musicaFondo");
     const sonido = document.getElementById("sonidoCorazon");
 
-    // === TOCAR MÚSICA ===
+    // Activar/desactivar música
     function toggleMusic() {
       if (!musicaActivada) {
-        musica.play().then(() => {
-          musicaActivada = true;
-          document.querySelector(".music-btn").textContent = "⏸️ Pausar Música";
-        }).catch(e => {
-          alert("Necesitas interactuar con la página primero (como escribir).");
-        });
+        musica.play()
+          .then(() => {
+            musicaActivada = true;
+            document.querySelector(".music-btn").textContent = "⏸️ Música ON";
+          })
+          .catch(() => {
+            alert("Por favor, interactúa con la página primero (haz clic en 'love').");
+          });
       } else {
         musica.pause();
         musicaActivada = false;
-        document.querySelector(".music-btn").textContent = "🎵 Activar Música Romántica";
+        document.querySelector(".music-btn").textContent = "🎵 Activar Música";
       }
     }
 
-    // === ESCRIBIR CON AMOR: cada letra → "love ❤️" flota ===
-    function escribirConAmor(textarea) {
-      const ultimaLetra = textarea.value.slice(-1);
-      if (ultimaLetra.trim() !== "") {
-        // Reproducir sonido de corazón
-        sonido.currentTime = 0;
-        sonido.play().catch(() => {}); // Silenciar error si no se permite
+    // Al hacer clic en "love", salirán corazones y sonidos
+    function hacerMagia() {
+      // Reproducir sonido
+      sonido.currentTime = 0;
+      sonido.play().catch(() => {});
 
-        // Crear efecto "love ❤️" flotante
-        crearTextoAmor(
-          Math.random() * (window.innerWidth - 100),
-          textarea.offsetTop + textarea.offsetHeight - 30
-        );
+      // Crear 15 corazones que salgan desde "love"
+      for (let i = 0; i < 15; i++) {
+        setTimeout(() => {
+          const corazon = document.createElement("div");
+          corazon.classList.add("corazon");
+          corazon.textContent = "❤️";
+          
+          // Posición alrededor de la palabra "love"
+          const x = window.innerWidth / 2 + (Math.random() - 0.5) * 100;
+          const y = window.innerHeight / 2 + (Math.random() - 0.5) * 50;
+
+          corazon.style.left = x + "px";
+          corazon.style.top = y + "px";
+
+          document.body.appendChild(corazon);
+
+          // Eliminar del DOM después de la animación
+          setTimeout(() => {
+            corazon.remove();
+          }, 3000);
+        }, i * 60);
       }
-    }
-
-    // === CREAR TEXTO "love ❤️" FLOTANTE ===
-    function crearTextoAmor(x, y) {
-      const elem = document.createElement("div");
-      elem.classList.add("corazon");
-      elem.innerHTML = "love ❤️";
-      elem.style.left = x + "px";
-      elem.style.top = y + "px";
-      elem.style.fontSize = "18px";
-      elem.style.color = "#e91e63";
-      elem.style.fontWeight = "bold";
-      document.body.appendChild(elem);
-
-      setTimeout(() => {
-        elem.remove();
-      }, 3000);
-    }
-
-    // === FUNCIONES DE PROCESAMIENTO DE TEXTO ===
-    function getInput() {
-      return document.getElementById("inputText").value.trim();
-    }
-
-    function setOutput(text) {
-      document.getElementById("output").textContent = text;
-    }
-
-    function convertirMayusculas() {
-      const text = getInput();
-      setOutput(text.toUpperCase());
-    }
-
-    function convertirMinusculas() {
-      const text = getInput();
-      setOutput(text.toLowerCase());
-    }
-
-    function quitarEspacios() {
-      const lines = getInput().split('\n');
-      const cleaned = lines.map(line => line.trim()).filter(line => line).join('\n');
-      setOutput(cleaned);
-    }
-
-    function eliminarDuplicados() {
-      const lines = getInput().split('\n');
-      const unique = [...new Set(lines.map(line => line.trim()))].filter(line => line);
-      setOutput(unique.join('\n'));
-    }
-
-    function ordenar() {
-      const lines = getInput().split('\n');
-      const sorted = lines.map(line => line.trim()).filter(line => line).sort();
-      setOutput(sorted.join('\n'));
-    }
-
-    function agregarPrefijo() {
-      const prefijo = prompt("¿Qué prefijo quieres agregar?");
-      if (prefijo === null || prefijo === "") return;
-      const lines = getInput().split('\n');
-      const result = lines.map(line => prefijo + line.trim()).join('\n');
-      setOutput(result);
-    }
-
-    function agregarSufijo() {
-      const sufijo = prompt("¿Qué sufijo quieres agregar?");
-      if (sufijo === null || sufijo === "") return;
-      const lines = getInput().split('\n');
-      const result = lines.map(line => line.trim() + sufijo).join('\n');
-      setOutput(result);
-    }
-
-    function limpiar() {
-      document.getElementById("inputText").value = "";
-      setOutput("El resultado aparecerá aquí...");
-    }
-
-    // === DESCARGAR COMO .TXT ===
-    function descargar() {
-      const texto = document.getElementById("output").textContent;
-      if (!texto || texto === "El resultado aparecerá aquí...") {
-        alert("Primero procesa un texto para descargar.");
-        return;
-      }
-      const blob = new Blob([texto], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "texto-lote.txt";
-      a.click();
-      URL.revokeObjectURL(url);
     }
   </script>
 
