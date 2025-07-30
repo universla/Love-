@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>💖 Solo Love</title>
+  <title>💖 love chido</title>
   <style>
     body {
       margin: 0;
@@ -12,26 +12,34 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #ffeef2;
-      font-family: 'Arial', sans-serif;
+      background: #ffecf5;
+      background-image: radial-gradient(#f8bbd0 1px, transparent 1px);
+      background-size: 20px 20px;
+      font-family: 'Courier New', monospace;
       overflow: hidden;
       position: relative;
       user-select: none;
     }
 
     .love-text {
-      font-size: 80px;
+      font-size: 90px;
       font-weight: bold;
-      color: #e91e63;
-      text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+      color: #d81b60;
+      text-shadow: 0 0 15px rgba(255, 20, 147, 0.4);
       cursor: pointer;
-      animation: latido 1.5s infinite alternate;
+      animation: latido 1.2s infinite alternate, neon 2.5s infinite alternate;
       z-index: 10;
+      letter-spacing: 2px;
     }
 
     @keyframes latido {
       0% { transform: scale(1); }
-      100% { transform: scale(1.1); }
+      100% { transform: scale(1.15); }
+    }
+
+    @keyframes neon {
+      0% { text-shadow: 0 0 5px #d81b60; }
+      100% { text-shadow: 0 0 20px #ff4081, 0 0 30px #ff69b4; }
     }
 
     .corazon {
@@ -53,23 +61,51 @@
       }
     }
 
+    .love-effect {
+      position: absolute;
+      font-size: 24px;
+      font-weight: bold;
+      color: #e91e63;
+      opacity: 0;
+      pointer-events: none;
+      animation: subir 2s forwards;
+    }
+
+    @keyframes subir {
+      0% {
+        opacity: 0;
+        transform: translateY(0);
+      }
+      20% { opacity: 1; }
+      100% {
+        opacity: 0;
+        transform: translateY(-150px);
+      }
+    }
+
     .music-btn {
       position: fixed;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: #9c27b0;
+      background: #ad1457;
       color: white;
       border: none;
-      padding: 10px 16px;
+      padding: 12px 20px;
       border-radius: 30px;
       cursor: pointer;
-      font-size: 14px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      font-size: 15px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.2);
+      animation: pulsar 1.5s infinite alternate;
+    }
+
+    @keyframes pulsar {
+      0% { box-shadow: 0 0 10px #e91e63; }
+      100% { box-shadow: 0 0 25px #ff69b4; }
     }
 
     .music-btn:hover {
-      background: #7b1fa2;
+      background: #880e4f;
     }
   </style>
 </head>
@@ -78,72 +114,79 @@
   <!-- Palabra love en el centro -->
   <div class="love-text" onclick="hacerMagia()">love</div>
 
-  <!-- Botón para música -->
+  <!-- Botón de música chida -->
   <button class="music-btn" onclick="toggleMusic()">
-    🎵 Activar Música Romántica
+    🎧 Activar Música Love Chida
   </button>
 
   <!-- Sonido de corazón -->
   <audio id="sonidoCorazon" src="https://assets.mixkit.co/sfx/preview/mixkit-single-tone-arcade-game-over-211.mp3"></audio>
 
-  <!-- Música de fondo -->
+  <!-- Música LOFI LOVE CHIDA (libre y suave) -->
   <audio id="musicaFondo" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/audio/2022/04/26/audio_0f3c3d862c.mp3" type="audio/mpeg">
   </audio>
-
-  <script>
-    let musicaActivada = false;
-    const musica = document.getElementById("musicaFondo");
-    const sonido = document.getElementById("sonidoCorazon");
-
-    // Activar/desactivar música
-    function toggleMusic() {
-      if (!musicaActivada) {
-        musica.play()
-          .then(() => {
-            musicaActivada = true;
-            document.querySelector(".music-btn").textContent = "⏸️ Música ON";
-          })
-          .catch(() => {
-            alert("Por favor, interactúa con la página primero (haz clic en 'love').");
-          });
-      } else {
-        musica.pause();
-        musicaActivada = false;
-        document.querySelector(".music-btn").textContent = "🎵 Activar Música";
-      }
-    }
-
-    // Al hacer clic en "love", salirán corazones y sonidos
-    function hacerMagia() {
-      // Reproducir sonido
-      sonido.currentTime = 0;
-      sonido.play().catch(() => {});
-
-      // Crear 15 corazones que salgan desde "love"
-      for (let i = 0; i < 15; i++) {
-        setTimeout(() => {
-          const corazon = document.createElement("div");
-          corazon.classList.add("corazon");
-          corazon.textContent = "❤️";
-          
-          // Posición alrededor de la palabra "love"
-          const x = window.innerWidth / 2 + (Math.random() - 0.5) * 100;
-          const y = window.innerHeight / 2 + (Math.random() - 0.5) * 50;
-
-          corazon.style.left = x + "px";
-          corazon.style.top = y + "px";
-
-          document.body.appendChild(corazon);
-
-          // Eliminar del DOM después de la animación
-          setTimeout(() => {
-            corazon.remove();
-          }, 3000);
-        }, i * 60);
-      }
-    }
-  </script>
+  <!-- Esta es: "Lofi Hip Hop Beat - Coffee Shop" (Pixabay, libre de uso) -->
 
 </body>
+<script>
+  let musicaActivada = false;
+  const musica = document.getElementById("musicaFondo");
+  const sonido = document.getElementById("sonidoCorazon");
+
+  // Activar/desactivar música
+  function toggleMusic() {
+    if (!musicaActivada) {
+      musica.play()
+        .then(() => {
+          musicaActivada = true;
+          document.querySelector(".music-btn").innerHTML = "❤️ Música ON - love chido";
+        })
+        .catch(() => {
+          alert("Primero haz clic en 'love' para activar el audio.");
+        });
+    } else {
+      musica.pause();
+      musicaActivada = false;
+      document.querySelector(".music-btn").innerHTML = "🎧 Activar Música Love Chida";
+    }
+  }
+
+  // Magia al hacer clic en "love"
+  function hacerMagia() {
+    // Sonido de corazón
+    sonido.currentTime = 0;
+    sonido.play().catch(() => {});
+
+    // Crear 10 corazones
+    for (let i = 0; i < 10; i++) {
+      setTimeout(() => {
+        const corazon = document.createElement("div");
+        corazon.classList.add("corazon");
+        corazon.textContent = "💗";
+        
+        const x = window.innerWidth / 2 + (Math.random() - 0.5) * 120;
+        const y = window.innerHeight / 2 + (Math.random() - 0.5) * 60;
+
+        corazon.style.left = x + "px";
+        corazon.style.top = y + "px";
+        document.body.appendChild(corazon);
+
+        setTimeout(() => corazon.remove(), 3000);
+      }, i * 80);
+    }
+
+    // Efecto de texto "loveeee" flotando
+    const efecto = document.createElement("div");
+    efecto.classList.add("love-effect");
+    efecto.textContent = "loveeee 💓";
+    
+    efecto.style.left = (window.innerWidth / 2 - 60) + "px";
+    efecto.style.top = (window.innerHeight / 2 + 50) + "px";
+    
+    document.body.appendChild(efecto);
+
+    setTimeout(() => efecto.remove(), 2000);
+  }
+</script>
 </html>
