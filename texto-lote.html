@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Texto en Lote Gratis</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #f7f7f7;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📝 Procesador de Texto en Lote (Gratis)</h1>
+  <p>Pega varias líneas de texto y elige una acción para procesarlas todas.</p>
+
+  <textarea id="inputText" placeholder="Pega aquí tu texto (una línea por entrada)...
+Línea 1
+Línea 2
+Línea 3"></textarea>
+
+  <div>
+    <button onclick="convertirMayusculas()">MAYÚSCULAS</button>
+    <button onclick="convertirMinusculas()">minúsculas</button>
+    <button onclick="quitarEspacios()">Quitar espacios</button>
+    <button onclick="agregarPrefijo()">Agregar prefijo</button>
+    <button onclick="agregarSufijo()">Agregar sufijo</button>
+    <button onclick="limpiar()">Limpiar</button>
+  </div>
+
+  <div class="output" id="output">El resultado aparecerá aquí...</div>
+
+  <script>
+    function getInput() {
+      return document.getElementById("inputText").value.trim();
+    }
+
+    function setOutput(text) {
+      document.getElementById("output").textContent = text;
+    }
+
+    function convertirMayusculas() {
+      const text = getInput();
+      setOutput(text.toUpperCase());
+    }
+
+    function convertirMinusculas() {
+      const text = getInput();
+      setOutput(text.toLowerCase());
+    }
+
+    function quitarEspacios() {
+      const lines = getInput().split('\n');
+      const cleaned = lines.map(line => line.trim()).filter(line => line).join('\n');
+      setOutput(cleaned);
+    }
+
+    function agregarPrefijo() {
+      const prefijo = prompt("¿Qué prefijo quieres agregar?");
+      if (prefijo === null) return;
+      const lines = getInput().split('\n');
+      const result = lines.map(line => prefijo + line).join('\n');
+      setOutput(result);
+    }
+
+    function agregarSufijo() {
+      const sufijo = prompt("¿Qué sufijo quieres agregar?");
+      if (sufijo === null) return;
+      const lines = getInput().split('\n');
+      const result = lines.map(line => line + sufijo).join('\n');
+      setOutput(result);
+    }
+
+    function limpiar() {
+      document.getElementById("inputText").value = "";
+      setOutput("El resultado aparecerá aquí...");
+    }
+  </script>
+
+</body>
+</html>
