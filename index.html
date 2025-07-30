@@ -4,53 +4,86 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>💖 love en línea</title>
+  <title>💖 Texto en Lote con Historial</title>
   <style>
     body {
       margin: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
       background: #fff0f5;
-      font-family: 'Arial', sans-serif;
+      color: #333;
+      line-height: 1.6;
       overflow: hidden;
-      user-select: none;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
       padding: 20px;
+      text-align: center;
     }
     h1 {
-      font-size: 32px;
       color: #e91e63;
-      text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
-    .spotify-container {
-      width: 100%;
-      max-width: 500px;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-    }
-    .spotify-container iframe {
-      width: 100%;
-      height: 80px;
-      border: none;
-      border-radius: 12px;
+    p {
+      color: #555;
+      font-size: 16px;
     }
     textarea {
-      width: 90%;
-      max-width: 500px;
-      height: 100px;
+      width: 100%;
+      height: 120px;
       padding: 12px;
       border: 2px solid #e91e63;
       border-radius: 10px;
       font-size: 16px;
-      resize: none;
-      text-align: center;
+      resize: vertical;
       background-color: white;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .buttons {
+      margin: 20px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    button {
+      background-color: #e91e63;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background-color: #c2185b;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: white;
+      border: 1px solid #e91e63;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      text-align: left;
+      min-height: 60px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    }
+    .historial {
+      margin-top: 30px;
+      padding: 15px;
+      background-color: #fce4ec;
+      border: 1px dashed #e91e63;
+      border-radius: 8px;
+      text-align: left;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 14px;
+      color: #d81b60;
+    }
+    .historial h3 {
+      margin-top: 0;
+      color: #c2185b;
     }
     .corazon, .love-effect {
       position: absolute;
@@ -63,7 +96,7 @@
       color: #ff4081;
     }
     .love-effect {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: bold;
       color: #d81b60;
     }
@@ -78,63 +111,148 @@
         opacity: 0;
       }
     }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #777;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Escribe algo con amor 💖</h1>
+  <div class="container">
+    <h1>📝 Texto en Lote + Historial</h1>
+    <p>Escribe, procesa y guarda lo que escribiste ❤️</p>
 
-  <!-- Reproductor de Spotify -->
-  <div class="spotify-container">
-    <iframe src="https://open.spotify.com/embed/track/5XeFesFbtLpXzIVDNQP22n?utm_source=generator" 
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-            loading="lazy">
-    </iframe>
+    <!-- Área de entrada -->
+    <textarea id="inputText" placeholder="Escribe algo..." oninput="escribirConAmor()"></textarea>
+
+    <!-- Botones de procesamiento -->
+    <div class="buttons">
+      <button onclick="convertirMayusculas()">MAYÚSCULAS</button>
+      <button onclick="convertirMinusculas()">minúsculas</button>
+      <button onclick="quitarEspacios()">Quitar espacios</button>
+      <button onclick="agregarPrefijo()">+ Prefijo</button>
+      <button onclick="agregarSufijo()">+ Sufijo</button>
+      <button onclick="guardarTexto()">💾 Guardar este texto</button>
+      <button onclick="limpiar()">Limpiar</button>
+    </div>
+
+    <!-- Resultado -->
+    <div class="output" id="output">El resultado aparecerá aquí...</div>
+
+    <!-- Historial de textos guardados -->
+    <div class="historial">
+      <h3>📜 Lo que has escrito:</h3>
+      <ul id="listaHistorial"></ul>
+      <button onclick="limpiarHistorial()" style="font-size:12px; background:#f44336;">Limpiar historial</button>
+    </div>
+
+    <footer>
+      Hecho con 💖 | 100% offline y sin rastreo
+    </footer>
   </div>
 
-  <!-- Área de texto -->
-  <textarea id="inputText" 
-            placeholder="Escribe aquí..." 
-            oninput="escribirConAmor()"></textarea>
-
-  <!-- Sonido de corazón (opcional) -->
+  <!-- Sonido de corazón -->
   <audio id="sonido" src="https://assets.mixkit.co/sfx/preview/mixkit-single-tone-arcade-game-over-211.mp3"></audio>
 
   <script>
-    const textarea = document.getElementById("inputText");
+    const input = document.getElementById("inputText");
+    const output = document.getElementById("output");
+    const lista = document.getElementById("listaHistorial");
     const sonido = document.getElementById("sonido");
 
+    // Cargar historial al iniciar
+    function cargarHistorial() {
+      const historial = JSON.parse(localStorage.getItem("historialTexto") || "[]");
+      lista.innerHTML = "";
+      historial.forEach(texto => {
+        const li = document.createElement("li");
+        li.textContent = texto;
+        lista.appendChild(li);
+      });
+    }
+
+    // Guardar texto en el historial
+    function guardarTexto() {
+      const texto = input.value.trim();
+      if (!texto) {
+        alert("Primero escribe algo para guardar.");
+        return;
+      }
+      const historial = JSON.parse(localStorage.getItem("historialTexto") || "[]");
+      historial.push(`[${new Date().toLocaleTimeString()}] ${texto}`);
+      
+      // Solo guardar los últimos 50
+      if (historial.length > 50) historial.shift();
+      
+      localStorage.setItem("historialTexto", JSON.stringify(historial));
+      cargarHistorial();
+    }
+
+    // Limpiar historial
+    function limpiarHistorial() {
+      if (confirm("¿Eliminar todo el historial?")) {
+        localStorage.removeItem("historialTexto");
+        cargarHistorial();
+      }
+    }
+
+    // Funciones de procesamiento
+    function convertirMayusculas() {
+      output.textContent = input.value.toUpperCase();
+    }
+    function convertirMinusculas() {
+      output.textContent = input.value.toLowerCase();
+    }
+    function quitarEspacios() {
+      output.textContent = input.value.split('\n').map(l => l.trim()).filter(l => l).join('\n');
+    }
+    function agregarPrefijo() {
+      const prefijo = prompt("Prefijo:");
+      if (prefijo !== null) {
+        output.textContent = input.value.split('\n').map(l => prefijo + l).join('\n');
+      }
+    }
+    function agregarSufijo() {
+      const sufijo = prompt("Sufijo:");
+      if (sufijo !== null) {
+        output.textContent = input.value.split('\n').map(l => l + sufijo).join('\n');
+      }
+    }
+    function limpiar() {
+      input.value = "";
+      output.textContent = "El resultado aparecerá aquí...";
+    }
+
+    // Efecto de amor al escribir
     function escribirConAmor() {
-      const ultimaLetra = textarea.value.slice(-1);
-      if (ultimaLetra.trim() !== "") {
-        // Reproducir sonido de corazón
+      const ultimaLetra = input.value.slice(-1);
+      if (["l", "o", "v", "e"].includes(ultimaLetra.toLowerCase())) {
+        // Sonido
         sonido.currentTime = 0;
         sonido.play().catch(() => {});
 
-        // Crear efecto de corazón
-        const corazon = document.createElement("div");
-        corazon.classList.add("corazon");
-        corazon.textContent = "❤️";
-        corazon.style.left = (Math.random() * window.innerWidth - 50) + 50 + "px";
-        corazon.style.top = (window.innerHeight / 2 + 50) + "px";
-        document.body.appendChild(corazon);
-
-        // Crear efecto de "loveeee"
-        const love = document.createElement("div");
-        love.classList.add("love-effect");
-        love.textContent = "loveeee 💖";
-        love.style.left = (Math.random() * window.innerWidth - 50) + 50 + "px";
-        love.style.top = (window.innerHeight / 2 + 50) + "px";
-        document.body.appendChild(love);
-
-        // Eliminar elementos después de la animación
-        setTimeout(() => {
-          corazon.remove();
-          love.remove();
-        }, 3000);
+        // Corazón
+        crearEfecto("❤️", Math.random() * 60 + 10);
+        // "loveeee"
+        crearEfecto("loveeee 💖", Math.random() * 60 + 20);
       }
     }
-  </script>
 
+    function crearEfecto(texto, delay) {
+      const elem = document.createElement("div");
+      elem.classList.add(texto.includes("love") ? "love-effect" : "corazon");
+      elem.textContent = texto;
+      elem.style.left = Math.random() * (window.innerWidth - 100) + 50 + "px";
+      elem.style.top = (window.innerHeight - 100) + "px";
+      document.body.appendChild(elem);
+      setTimeout(() => elem.remove(), 3000);
+    }
+
+    // Cargar historial al iniciar
+    cargarHistorial();
+  </script>
 </body>
 </html>
