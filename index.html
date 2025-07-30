@@ -4,26 +4,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Texto en Lote - Con Amor 💖</title>
+  <title>💖 Texto en Lote con Amor</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       max-width: 800px;
       margin: 30px auto;
       padding: 20px;
-      background-color: #fdf7fb;
+      background: #fff0f5;
       color: #2c3333;
       line-height: 1.6;
       position: relative;
       overflow: hidden;
-    }
-    h1 {
       text-align: center;
+    }
+
+    /* Palabra LOVE en el centro */
+    .love-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 120px;
+      font-weight: bold;
+      color: transparent;
+      background: linear-gradient(45deg, #ff4081, #e91e63, #ff69b4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      pointer-events: none;
+      opacity: 0.1;
+      z-index: -1;
+      letter-spacing: 8px;
+      text-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+      user-select: none;
+    }
+
+    h1 {
       color: #e91e63;
       margin-bottom: 10px;
     }
     p {
-      text-align: center;
       color: #555;
       font-size: 16px;
     }
@@ -32,12 +52,12 @@
       height: 160px;
       margin: 20px 0;
       padding: 12px;
-      border: 1px solid #ffb6c1;
-      border-radius: 8px;
+      border: 2px solid #ff69b4;
+      border-radius: 12px;
       font-size: 14px;
       resize: vertical;
-      box-shadow: 0 2px 4px rgba(233, 30, 99, 0.1);
-      background-color: #fff;
+      box-shadow: 0 4px 10px rgba(255, 105, 180, 0.2);
+      background-color: white;
     }
     .buttons {
       display: flex;
@@ -68,15 +88,15 @@
       white-space: pre-wrap;
       font-family: monospace;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      text-align: left;
     }
     footer {
       margin-top: 30px;
-      text-align: center;
       color: #777;
       font-size: 14px;
     }
 
-    /* Estilo de los corazones */
+    /* Corazones flotantes */
     .corazon {
       position: absolute;
       color: #ff4081;
@@ -96,14 +116,30 @@
         opacity: 0;
       }
     }
+
+    /* Botón de música */
+    .music-btn {
+      background-color: #9c27b0;
+      margin: 10px auto;
+      display: block;
+    }
+    .music-btn:hover {
+      background-color: #7b1fa2;
+    }
   </style>
 </head>
 <body>
 
-  <h1>📝 Texto en Lote 💖</h1>
-  <p>Escribe <strong>love</strong> y verás magia ❤️</p>
+  <!-- Palabra LOVE gigante en el fondo -->
+  <div class="love-center">love</div>
 
-  <textarea id="inputText" placeholder="Escribe algo... prueba con 'love'" oninput="detectarAmor(this)"></textarea>
+  <h1>📝 Texto en Lote 💖</h1>
+  <p>Escribe cualquier letra y verás amor flotar</p>
+
+  <!-- Botón para activar música -->
+  <button class="music-btn" onclick="toggleMusic()">🎵 Activar Música Romántica</button>
+
+  <textarea id="inputText" placeholder="Escribe algo..." oninput="escribirConAmor(this)"></textarea>
 
   <div class="buttons">
     <button onclick="convertirMayusculas()">MAYÚSCULAS</button>
@@ -120,11 +156,72 @@
   <div class="output" id="output">El resultado aparecerá aquí...</div>
 
   <footer>
-    Hecho con ❤️ en GitHub Pages | 100% gratis
+    Hecho con ❤️ | 100% gratis y con amor
   </footer>
 
+  <!-- Sonidos -->
+  <audio id="sonidoCorazon" src="https://assets.mixkit.co/sfx/preview/mixkit-single-tone-arcade-game-over-211.mp3" preload="auto"></audio>
+  
+  <!-- Música romántica de fondo (suave) -->
+  <audio id="musicaFondo" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
-    // === FUNCIONES DE TEXTO ===
+    let musicaActivada = false;
+    const musica = document.getElementById("musicaFondo");
+    const sonido = document.getElementById("sonidoCorazon");
+
+    // === TOCAR MÚSICA ===
+    function toggleMusic() {
+      if (!musicaActivada) {
+        musica.play().then(() => {
+          musicaActivada = true;
+          document.querySelector(".music-btn").textContent = "⏸️ Pausar Música";
+        }).catch(e => {
+          alert("Necesitas interactuar con la página primero (como escribir).");
+        });
+      } else {
+        musica.pause();
+        musicaActivada = false;
+        document.querySelector(".music-btn").textContent = "🎵 Activar Música Romántica";
+      }
+    }
+
+    // === ESCRIBIR CON AMOR: cada letra → "love ❤️" flota ===
+    function escribirConAmor(textarea) {
+      const ultimaLetra = textarea.value.slice(-1);
+      if (ultimaLetra.trim() !== "") {
+        // Reproducir sonido de corazón
+        sonido.currentTime = 0;
+        sonido.play().catch(() => {}); // Silenciar error si no se permite
+
+        // Crear efecto "love ❤️" flotante
+        crearTextoAmor(
+          Math.random() * (window.innerWidth - 100),
+          textarea.offsetTop + textarea.offsetHeight - 30
+        );
+      }
+    }
+
+    // === CREAR TEXTO "love ❤️" FLOTANTE ===
+    function crearTextoAmor(x, y) {
+      const elem = document.createElement("div");
+      elem.classList.add("corazon");
+      elem.innerHTML = "love ❤️";
+      elem.style.left = x + "px";
+      elem.style.top = y + "px";
+      elem.style.fontSize = "18px";
+      elem.style.color = "#e91e63";
+      elem.style.fontWeight = "bold";
+      document.body.appendChild(elem);
+
+      setTimeout(() => {
+        elem.remove();
+      }, 3000);
+    }
+
+    // === FUNCIONES DE PROCESAMIENTO DE TEXTO ===
     function getInput() {
       return document.getElementById("inputText").value.trim();
     }
@@ -196,67 +293,6 @@
       a.download = "texto-lote.txt";
       a.click();
       URL.revokeObjectURL(url);
-    }
-
-    // === DETECTAR "love" Y MOSTRAR CORAZONES ===
-    let loveDetectado = false; // Para evitar repetir
-
-    function detectarAmor(textarea) {
-      const value = textarea.value;
-      const cursorPos = textarea.selectionStart; // Posición del cursor
-
-      // Buscar "love" como palabra completa (con espacio, salto o inicio/fin)
-      const palabras = value.toLowerCase().split(/[\s\n,.;:!?]+/);
-      const ultimoFragmento = value.slice(Math.max(0, cursorPos - 10), cursorPos).toLowerCase();
-
-      if (palabras.includes("love") && !loveDetectado) {
-        loveDetectado = true;
-
-        // Resaltar "love" en el textarea
-        textarea.value = value.replace(/\blove\b/gi, "💖 love 💖");
-
-        // Crear 10 corazones que salgan del área del textarea
-        for (let i = 0; i < 10; i++) {
-          setTimeout(() => {
-            crearCorazon(
-              Math.random() * (textarea.offsetWidth - 20) + textarea.offsetLeft,
-              textarea.offsetTop + textarea.offsetHeight - 20
-            );
-          }, i * 100);
-        }
-
-        // Reiniciar después de 2 segundos para que pueda volver a activarse
-        setTimeout(() => {
-          loveDetectado = false;
-        }, 2000);
-      }
-
-      // Detectar letras "l", "o", "v", "e" individualmente (opcional)
-      const ultimaLetra = value.slice(-1).toLowerCase();
-      if (["l", "o", "v", "e"].includes(ultimaLetra)) {
-        // Pequeño corazón por letra
-        if (Math.random() < 0.4) { // 40% de probabilidad
-          crearCorazon(
-            Math.random() * window.innerWidth,
-            window.innerHeight - 100
-          );
-        }
-      }
-    }
-
-    // === CREAR CORAZÓN EN POSICIÓN ESPECÍFICA ===
-    function crearCorazon(x, y) {
-      const corazon = document.createElement("div");
-      corazon.classList.add("corazon");
-      corazon.textContent = "❤️";
-      corazon.style.left = x + "px";
-      corazon.style.top = y + "px";
-      document.body.appendChild(corazon);
-
-      // Eliminar del DOM después de la animación
-      setTimeout(() => {
-        corazon.remove();
-      }, 3000);
     }
   </script>
 
