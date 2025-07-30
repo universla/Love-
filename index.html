@@ -4,189 +4,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>💖 love chido</title>
+  <title>💖 love</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: #ffecf5;
-      background-image: radial-gradient(#f8bbd0 1px, transparent 1px);
-      background-size: 20px 20px;
-      font-family: 'Courier New', monospace;
+      background: #fff0f5;
+      font-family: 'Arial', sans-serif;
       overflow: hidden;
-      position: relative;
       user-select: none;
     }
-
     .love-text {
       font-size: 90px;
       font-weight: bold;
-      color: #d81b60;
-      text-shadow: 0 0 15px rgba(255, 20, 147, 0.4);
-      cursor: pointer;
-      animation: latido 1.2s infinite alternate, neon 2.5s infinite alternate;
-      z-index: 10;
-      letter-spacing: 2px;
+      color: #e91e63;
+      text-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
+      animation: latido 1.2s infinite alternate;
+      margin-bottom: 40px;
     }
-
     @keyframes latido {
       0% { transform: scale(1); }
-      100% { transform: scale(1.15); }
+      100% { transform: scale(1.1); }
     }
-
-    @keyframes neon {
-      0% { text-shadow: 0 0 5px #d81b60; }
-      100% { text-shadow: 0 0 20px #ff4081, 0 0 30px #ff69b4; }
+    .buttons {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
-
-    .corazon {
-      position: absolute;
-      font-size: 20px;
-      opacity: 1;
-      pointer-events: none;
-      animation: flotar 3s ease-out forwards;
-    }
-
-    @keyframes flotar {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100px) rotate(360deg);
-        opacity: 0;
-      }
-    }
-
-    .love-effect {
-      position: absolute;
-      font-size: 24px;
-      font-weight: bold;
-      color: #e91e63;
-      opacity: 0;
-      pointer-events: none;
-      animation: subir 2s forwards;
-    }
-
-    @keyframes subir {
-      0% {
-        opacity: 0;
-        transform: translateY(0);
-      }
-      20% { opacity: 1; }
-      100% {
-        opacity: 0;
-        transform: translateY(-150px);
-      }
-    }
-
-    .music-btn {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ad1457;
-      color: white;
+    .btn {
+      padding: 12px 24px;
+      font-size: 16px;
       border: none;
-      padding: 12px 20px;
       border-radius: 30px;
       cursor: pointer;
-      font-size: 15px;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.2);
-      animation: pulsar 1.5s infinite alternate;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
     }
-
-    @keyframes pulsar {
-      0% { box-shadow: 0 0 10px #e91e63; }
-      100% { box-shadow: 0 0 25px #ff69b4; }
+    .btn:hover {
+      transform: translateY(-3px);
     }
-
-    .music-btn:hover {
-      background: #880e4f;
+    .btn-spotify {
+      background: #1db954;
+      color: white;
+    }
+    .btn-youtube {
+      background: #ff0000;
+      color: white;
     }
   </style>
 </head>
 <body>
 
-  <!-- Palabra love en el centro -->
-  <div class="love-text" onclick="hacerMagia()">love</div>
+  <!-- Palabra love -->
+  <div class="love-text">love</div>
 
-  <!-- Botón de música chida -->
-  <button class="music-btn" onclick="toggleMusic()">
-    🎧 Activar Música Love Chida
-  </button>
-
-  <!-- Sonido de corazón -->
-  <audio id="sonidoCorazon" src="https://youtu.be/NxkYp6Y-wbU?feature=shared"></audio>
-
-  <!-- Música LOFI LOVE CHIDA (libre y suave) -->
-  <audio id="musicaFondo" loop>
-    <source src="https://youtu.be/NxkYp6Y-wbU?feature=shared" type="audio/mpeg">
-  </audio>
-  <!-- Esta es: "Lofi Hip Hop Beat - Coffee Shop" (Pixabay, libre de uso) -->
+  <!-- Botones para Spotify y YouTube -->
+  <div class="buttons">
+    <a href="https://open.spotify.com/track/5XeFesFbtLpXzIVDNQP22n" target="_blank" class="btn btn-spotify">
+      🎧 Escuchar en Spotify
+    </a>
+    <a href="https://youtu.be/NxkYp6Y-wbU" target="_blank" class="btn btn-youtube">
+      ▶️ Ver en YouTube
+    </a>
+  </div>
 
 </body>
-<script>
-  let musicaActivada = false;
-  const musica = document.getElementById("musicaFondo");
-  const sonido = document.getElementById("sonidoCorazon");
-
-  // Activar/desactivar música
-  function toggleMusic() {
-    if (!musicaActivada) {
-      musica.play()
-        .then(() => {
-          musicaActivada = true;
-          document.querySelector(".music-btn").innerHTML = "❤️ Música ON - love chido";
-        })
-        .catch(() => {
-          alert("Primero haz clic en 'love' para activar el audio.");
-        });
-    } else {
-      musica.pause();
-      musicaActivada = false;
-      document.querySelector(".music-btn").innerHTML = "🎧 Activar Música Love Chida";
-    }
-  }
-
-  // Magia al hacer clic en "love"
-  function hacerMagia() {
-    // Sonido de corazón
-    sonido.currentTime = 0;
-    sonido.play().catch(() => {});
-
-    // Crear 10 corazones
-    for (let i = 0; i < 10; i++) {
-      setTimeout(() => {
-        const corazon = document.createElement("div");
-        corazon.classList.add("corazon");
-        corazon.textContent = "💗";
-        
-        const x = window.innerWidth / 2 + (Math.random() - 0.5) * 120;
-        const y = window.innerHeight / 2 + (Math.random() - 0.5) * 60;
-
-        corazon.style.left = x + "px";
-        corazon.style.top = y + "px";
-        document.body.appendChild(corazon);
-
-        setTimeout(() => corazon.remove(), 3000);
-      }, i * 80);
-    }
-
-    // Efecto de texto "loveeee" flotando
-    const efecto = document.createElement("div");
-    efecto.classList.add("love-effect");
-    efecto.textContent = "loveeee 💓";
-    
-    efecto.style.left = (window.innerWidth / 2 - 60) + "px";
-    efecto.style.top = (window.innerHeight / 2 + 50) + "px";
-    
-    document.body.appendChild(efecto);
-
-    setTimeout(() => efecto.remove(), 2000);
-  }
-</script>
 </html>
