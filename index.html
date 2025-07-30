@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Texto en Lote - Gratis</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #f9fafa;
+      color: #2c3333;
+      line-height: 1.6;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+    p {
+      text-align: center;
+      color: #555;
+      font-size: 16px;
+    }
+    textarea {
+      width: 100%;
+      height: 160px;
+      margin: 20px 0;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      resize: vertical;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .output {
+      padding: 16px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      min-height: 50px;
+      white-space: pre-wrap;
+      font-family: monospace;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #777;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📝 Texto en Lote</h1>
+  <p>Herramienta gratuita para procesar varias líneas de texto</p>
+
+  <textarea id="inputText" placeholder="Pega tu texto aquí...
+Línea 1
+Línea 2
+Línea 3"></textarea>
+
+  <div class="buttons">
+    <button onclick="convertirMayusculas()">MAYÚSCULAS</button>
+    <button onclick="convertirMinusculas()">minúsculas</button>
+    <button onclick="quitarEspacios()">Quitar espacios</button>
+    <button onclick="eliminarDuplicados()">Eliminar duplicados</button>
+    <button onclick="ordenar()">Ordenar A-Z</button>
+    <button onclick="agregarPrefijo()">+ Prefijo</button>
+    <button onclick="agregarSufijo()">+ Sufijo</button>
+    <button onclick="limpiar()">Limpiar</button>
+  </div>
+
+  <div class="output" id="output">El resultado aparecerá aquí...</div>
+
+  <footer>
+    Hecho con ❤️ en GitHub Pages | 100% gratis y sin rastreo
+  </footer>
+
+  <script>
+    function getInput() {
+      return document.getElementById("inputText").value.trim();
+    }
+
+    function setOutput(text) {
+      document.getElementById("output").textContent = text;
+    }
+
+    function convertirMayusculas() {
+      const text = getInput();
+      setOutput(text.toUpperCase());
+    }
+
+    function convertirMinusculas() {
+      const text = getInput();
+      setOutput(text.toLowerCase());
+    }
+
+    function quitarEspacios() {
+      const lines = getInput().split('\n');
+      const cleaned = lines.map(line => line.trim()).filter(line => line).join('\n');
+      setOutput(cleaned);
+    }
+
+    function eliminarDuplicados() {
+      const lines = getInput().split('\n');
+      const unique = [...new Set(lines.map(line => line.trim()))].filter(line => line);
+      setOutput(unique.join('\n'));
+    }
+
+    function ordenar() {
+      const lines = getInput().split('\n');
+      const sorted = lines.map(line => line.trim()).filter(line => line).sort();
+      setOutput(sorted.join('\n'));
+    }
+
+    function agregarPrefijo() {
+      const prefijo = prompt("¿Qué prefijo quieres agregar a cada línea?");
+      if (prefijo === null || prefijo === "") return;
+      const lines = getInput().split('\n');
+      const result = lines.map(line => prefijo + line.trim()).join('\n');
+      setOutput(result);
+    }
+
+    function agregarSufijo() {
+      const sufijo = prompt("¿Qué sufijo quieres agregar a cada línea?");
+      if (sufijo === null || sufijo === "") return;
+      const lines = getInput().split('\n');
+      const result = lines.map(line => line.trim() + sufijo).join('\n');
+      setOutput(result);
+    }
+
+    function limpiar() {
+      document.getElementById("inputText").value = "";
+      setOutput("El resultado aparecerá aquí...");
+    }
+  </script>
+
+</body>
+</html>
